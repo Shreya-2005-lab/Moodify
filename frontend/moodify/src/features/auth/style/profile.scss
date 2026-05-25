@@ -1,0 +1,77 @@
+.profile-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #0a0a0a 0%, #101820 100%);
+  padding: 40px;
+}
+
+.profile-card {
+  width: min(420px, 90vw);
+  padding: 40px 32px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 28px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  color: #fff;
+}
+
+.profile-avatar {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1db954, #1ed760);
+  display: grid;
+  place-items: center;
+  font-size: 36px;
+  font-weight: 800;
+  color: #091c0c;
+}
+
+.profile-card h1 {
+  margin: 0;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.profile-card p {
+  color: rgba(255, 255, 255, 0.75);
+  margin: 14px 0 28px;
+  line-height: 1.6;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.profile-button {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.profile-home {
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.profile-logout {
+  background: #1db954;
+  color: #091c0c;
+}
+
+.profile-button:hover {
+  transform: translateY(-2px);
+}

@@ -1,0 +1,57 @@
+.face{
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  h1{
+    color: white;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  h2{
+    color: #1db954;
+    font-size: 14px;
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  button{
+
+    width: 100%;
+
+    border: none;
+
+    padding: 10px;
+
+    border-radius: 12px;
+
+    background: #1db954;
+
+    color: black;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+    &:hover{
+      transform: scale(1.03);
+    }
+  }
+
+  video{
+
+    width: 100%;
+
+    border-radius: 14px;
+
+    object-fit: cover;
+
+    border:
+    2px solid rgba(255,255,255,0.1);
+  }
+}
