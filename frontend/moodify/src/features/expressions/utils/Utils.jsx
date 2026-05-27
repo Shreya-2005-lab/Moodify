@@ -1,9 +1,12 @@
+// Utils.jsx
+
 import {
   FaceLandmarker,
   FilesetResolver,
 } from "@mediapipe/tasks-vision";
 
 export async function setupFaceLandmarker() {
+
   const vision =
     await FilesetResolver.forVisionTasks(
       "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
@@ -19,7 +22,9 @@ export async function setupFaceLandmarker() {
         },
 
         outputFaceBlendshapes: true,
+
         runningMode: "VIDEO",
+
         numFaces: 1,
       }
     );
@@ -28,20 +33,55 @@ export async function setupFaceLandmarker() {
 }
 
 export async function startCamera(videoRef) {
-  const stream =
-    await navigator.mediaDevices.getUserMedia({
-      video: true,
-    });
 
-  videoRef.current.srcObject = stream;
+  try {
 
-  await videoRef.current.play();
+    if (!videoRef?.current) {
+
+      console.log(
+        "VIDEO REF IS NULL"
+      );
+
+      return;
+    }
+
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
+
+    videoRef.current.srcObject =
+      stream;
+
+    await videoRef.current.play();
+
+    return stream;
+
+  } catch (error) {
+
+    console.log(
+      "CAMERA ERROR:",
+      error
+    );
+  }
 }
 
 export function detectFaceExpression(
   faceLandmarker,
   video
 ) {
+
+  if (
+    !faceLandmarker ||
+    !video
+  ) {
+    return {
+      label: "😐 Neutral",
+      mood: "neutral",
+    };
+  }
+
   const results =
     faceLandmarker.detectForVideo(
       video,
@@ -64,19 +104,29 @@ export function detectFaceExpression(
   const scores = {};
 
   blendshapes.forEach((shape) => {
-    scores[shape.categoryName] = shape.score;
+
+    scores[
+      shape.categoryName
+    ] = shape.score;
   });
 
-  let label = "😐 Neutral";
-  let mood = "neutral";
+  let label =
+    "😐 Neutral";
+
+  let mood =
+    "neutral";
 
   // Smile
   if (
     scores.mouthSmileLeft > 0.45 &&
     scores.mouthSmileRight > 0.45
   ) {
-    label = "😊 Smiling";
-    mood = "smiling";
+
+    label =
+      "😊 Smiling";
+
+    mood =
+      "smiling";
   }
 
   // Surprise
@@ -84,8 +134,12 @@ export function detectFaceExpression(
     scores.jawOpen > 0.3 &&
     scores.browInnerUp > 0.01
   ) {
-    label = "😲 Surprised";
-    mood = "surprised";
+
+    label =
+      "😲 Surprised";
+
+    mood =
+      "surprised";
   }
 
   // Sad
@@ -93,8 +147,12 @@ export function detectFaceExpression(
     scores.mouthSmileLeft < 0.2 &&
     scores.mouthSmileRight < 0.2
   ) {
-    label = "😢 Sad";
-    mood = "sad";
+
+    label =
+      "😢 Sad";
+
+    mood =
+      "sad";
   }
 
   // Blink
@@ -102,9 +160,16 @@ export function detectFaceExpression(
     scores.eyeBlinkLeft > 0.5 ||
     scores.eyeBlinkRight > 0.5
   ) {
-    label = "😉 Blinking";
-    mood = "blinking";
+
+    label =
+      "😉 Blinking";
+
+    mood =
+      "blinking";
   }
 
-  return { label, mood };
+  return {
+    label,
+    mood,
+  };
 }

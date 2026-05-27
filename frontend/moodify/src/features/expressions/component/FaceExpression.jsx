@@ -1,90 +1,125 @@
-import { useEffect, useRef, useState } from "react";
-import "../pages/styles/faceExpression.scss"
+// FaceExpression.jsx
+
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import "../pages/styles/faceExpression.scss";
+
 import {
   setupFaceLandmarker,
   startCamera,
   detectFaceExpression,
 } from "../utils/Utils";
 
-import { useSong } from "../../home/hooks/useSong";
+import { useSong }
+from "../../home/hooks/useSong";
 
-export default function FaceExpression({ setDetected }) {
+export default function FaceExpression({
+  setDetected,
+}) {
 
-  const videoRef = useRef(null);
+  const videoRef =
+    useRef(null);
 
-  const [expression, setExpression] =
-    useState("No expression detected");
+  const [
+    expression,
+    setExpression,
+  ] = useState(
+    "No expression detected"
+  );
 
   const faceLandmarkerRef =
     useRef(null);
 
-  const { handleSetSong } =
-    useSong();
+  const {
+    handleSetSong,
+  } = useSong();
 
   useEffect(() => {
 
+    let mounted = true;
+
     async function initialize() {
 
-      const landmarker =
-        await setupFaceLandmarker();
+      try {
 
-      faceLandmarkerRef.current =
-        landmarker;
+        if (!videoRef.current)
+          return;
 
-      await startCamera(videoRef);
+        const landmarker =
+          await setupFaceLandmarker();
+
+        if (!mounted)
+          return;
+
+        faceLandmarkerRef.current =
+          landmarker;
+
+        await startCamera(
+          videoRef
+        );
+
+      } catch (error) {
+
+        console.log(
+          "INITIALIZE ERROR:",
+          error
+        );
+      }
     }
 
     initialize();
 
+    return () => {
+      mounted = false;
+    };
+
   }, []);
-
-  // async function handleDetectExpression() {
-
-  //   const detectedExpression =
-  //     detectFaceExpression(
-  //       faceLandmarkerRef.current,
-  //       videoRef.current
-  //     );
-
-  //   console.log(
-  //     detectedExpression
-  //   );
-
-  //   setExpression(
-  //     detectedExpression
-  //   );
-
-  //   // FETCH SONG
-  //   await handleSetSong({
-  //     mood:
-  //       detectedExpression,
-  //   });
-  // }
 
   async function handleDetectExpression() {
 
-  const detected =
-    detectFaceExpression(
-      faceLandmarkerRef.current,
-      videoRef.current
-    );
+    try {
 
-  setExpression(
-    detected.label
-  );
+      const detected =
+        detectFaceExpression(
+          faceLandmarkerRef.current,
+          videoRef.current
+        );
 
-  // SHOW PLAYER
-  if (setDetected) {
-    setDetected(true);
+      console.log(
+        detected
+      );
+
+      setExpression(
+        detected.label
+      );
+
+      if (setDetected) {
+
+        setDetected(true);
+      }
+
+      await handleSetSong({
+        mood:
+          detected.mood,
+      });
+
+    } catch (error) {
+
+      console.log(
+        "DETECTION ERROR:",
+        error
+      );
+    }
   }
 
-  await handleSetSong({
-    mood: detected.mood,
-  });
-}
-
   return (
-   <div className="face">
+
+    <div className="face">
+
       <h1>
         Face Expression Detector
       </h1>
@@ -93,6 +128,7 @@ export default function FaceExpression({ setDetected }) {
         ref={videoRef}
         autoPlay
         playsInline
+        muted
         width="500"
         style={{
           borderRadius: "12px",
@@ -109,7 +145,10 @@ export default function FaceExpression({ setDetected }) {
         Detect Expression
       </button>
 
-      <h2>{expression}</h2>
+      <h2>
+        {expression}
+      </h2>
+
     </div>
   );
 }
