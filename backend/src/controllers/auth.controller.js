@@ -71,7 +71,7 @@ async function loginController(req, res) {
 
     if(!iPasswordValid){
     return res.status(400).json({
-      message: "unauthorised user...dont have a account"
+      message: "incorrect password"
     })
   }
     const token = jwt.sign({

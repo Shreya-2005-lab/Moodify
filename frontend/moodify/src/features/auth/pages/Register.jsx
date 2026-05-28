@@ -7,7 +7,7 @@ import { useAuth } from '../hooks/useAuth'
 
 const Register = () => {
 
-  const {loader, handleRegister} = useAuth()
+  const {loader, handleRegister, error} = useAuth()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [username, setUsername] = useState("")
@@ -16,7 +16,9 @@ const Register = () => {
   async function submitHandler(e) {
     e.preventDefault();
     await handleRegister({username, email, password});
-    navigate('/login');
+    if(!error) {
+      navigate('/login');
+    }
   }
 
   return (
@@ -33,6 +35,7 @@ const Register = () => {
       <FormGroup
       value={password} onChange={(e)=>{setPassword(e.target.value)}}
        label="Password" placeholder="Enter password"/>
+      {error && <p className='error-message'>{error}</p>}
       <button className='button' type='submit'>Register</button>
       </form>
       <div className='link-container'>

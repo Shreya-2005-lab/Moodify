@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router'
 const Login = () => {
   const navigate = useNavigate()
 
-  const {loader, handleLogin} = useAuth()
+  const {loader, handleLogin, error} = useAuth()
 const [email, setEmail] = useState("")
 const [password, setPassword] = useState("")
 
@@ -17,7 +17,9 @@ const [password, setPassword] = useState("")
   async function submitHandler(e) {
     e.preventDefault();
     await handleLogin({email, password})
-    navigate('/')
+    if(!error) {
+      navigate('/')
+    }
   }
 
 
@@ -38,6 +40,7 @@ const [password, setPassword] = useState("")
           setPassword(e.target.value)
         }}
         label="Password" placeholder="Enter your Password"/>
+        {error && <p className='error-message'>{error}</p>}
         <button className='button' type='submit'>Login</button>
       </form>
       <div className='link-container'>
