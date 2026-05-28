@@ -37,7 +37,13 @@ async function signUpController(req, res) {
     expiresIn: "1d"
   })
 
-res.cookie("token", token)
+// res.cookie("token", token)
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 24 * 60 * 60 * 1000,
+});
 
 
 return res.status(201).json({
@@ -75,7 +81,13 @@ async function loginController(req, res) {
     expiresIn: "1d"
   })
 
-res.cookie("token", token)
+// res.cookie("token", token)
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 24 * 60 * 60 * 1000,
+});
     
 
     return res.status(200).json({
@@ -105,7 +117,12 @@ async function getMeController(req, res) {
 async function logoutController(req, res) {
   const token = req.cookies.token;
 
-  res.clearCookie("token")
+  // res.clearCookie("token")
+  res.clearCookie("token", {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
 
   // await blacklistModel.create({
   //   token
