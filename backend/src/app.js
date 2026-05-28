@@ -8,7 +8,7 @@ const authRoutes = require("./routes/auth.routes");
 const songRoutes = require("./routes/songs.routes");
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://moodify-frontend-y4ib.onrender.com",
     credentials: true
 }));
 
