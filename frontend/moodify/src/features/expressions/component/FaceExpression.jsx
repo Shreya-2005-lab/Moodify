@@ -79,42 +79,92 @@ export default function FaceExpression({
 
   }, []);
 
+  // async function handleDetectExpression() {
+
+  //   try {
+
+  //     const detected =
+  //       detectFaceExpression(
+  //         faceLandmarkerRef.current,
+  //         videoRef.current
+  //       );
+
+  //     console.log(
+  //       detected
+  //     );
+
+  //     setExpression(
+  //       detected.label
+  //     );
+
+  //     if (setDetected) {
+
+  //       setDetected(true);
+  //     }
+
+  //     await handleSetSong({
+  //       mood:
+  //         detected.mood,
+  //     });
+
+  //   } catch (error) {
+
+  //     console.log(
+  //       "DETECTION ERROR:",
+  //       error
+  //     );
+  //   }
+  // }
   async function handleDetectExpression() {
 
-    try {
+  try {
 
-      const detected =
-        detectFaceExpression(
-          faceLandmarkerRef.current,
-          videoRef.current
-        );
-
-      console.log(
-        detected
-      );
-
-      setExpression(
-        detected.label
-      );
-
-      if (setDetected) {
-
-        setDetected(true);
-      }
-
-      await handleSetSong({
-        mood:
-          detected.mood,
-      });
-
-    } catch (error) {
+    // Check if video is ready
+    if (
+      !videoRef.current ||
+      videoRef.current.readyState < 2
+    ) {
 
       console.log(
-        "DETECTION ERROR:",
-        error
+        "VIDEO NOT READY"
       );
+
+      return;
     }
+
+    const detected =
+      detectFaceExpression(
+        faceLandmarkerRef.current,
+        videoRef.current
+      );
+
+    console.log(
+      "DETECTED:",
+      detected
+    );
+
+    setExpression(
+      detected.label
+    );
+
+    if (setDetected) {
+
+      setDetected(true);
+    }
+
+    await handleSetSong({
+      mood:
+        detected.mood,
+    });
+
+  } catch (error) {
+
+    console.log(
+      "DETECTION ERROR:",
+      error
+    );
   }
+}
 
   return (
 

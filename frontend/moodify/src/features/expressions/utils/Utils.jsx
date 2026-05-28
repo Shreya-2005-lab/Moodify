@@ -32,6 +32,41 @@ export async function setupFaceLandmarker() {
   return faceLandmarker;
 }
 
+// export async function startCamera(videoRef) {
+
+//   try {
+
+//     if (!videoRef?.current) {
+
+//       console.log(
+//         "VIDEO REF IS NULL"
+//       );
+
+//       return;
+//     }
+
+//     const stream =
+//       await navigator.mediaDevices.getUserMedia({
+//         video: true,
+//         audio: false,
+//       });
+
+//     videoRef.current.srcObject =
+//       stream;
+
+//     await videoRef.current.play();
+
+//     return stream;
+
+//   } catch (error) {
+
+//     console.log(
+//       "CAMERA ERROR:",
+//       error
+//     );
+//   }
+// }
+
 export async function startCamera(videoRef) {
 
   try {
@@ -45,16 +80,58 @@ export async function startCamera(videoRef) {
       return;
     }
 
+    // Check browser support
+    if (
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ) {
+
+      console.log(
+        "getUserMedia not supported"
+      );
+
+      return;
+    }
+
+    console.log(
+      "REQUESTING CAMERA ACCESS..."
+    );
+
     const stream =
       await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false,
       });
 
+    console.log(
+      "STREAM RECEIVED:",
+      stream
+    );
+
+    // Attach stream to video
     videoRef.current.srcObject =
       stream;
 
-    await videoRef.current.play();
+    // Wait for metadata before playing
+    videoRef.current.onloadedmetadata =
+      async () => {
+
+        try {
+
+          await videoRef.current.play();
+
+          console.log(
+            "CAMERA STARTED SUCCESSFULLY"
+          );
+
+        } catch (playError) {
+
+          console.log(
+            "VIDEO PLAY ERROR:",
+            playError
+          );
+        }
+      };
 
     return stream;
 
@@ -62,7 +139,8 @@ export async function startCamera(videoRef) {
 
     console.log(
       "CAMERA ERROR:",
-      error
+      error.name,
+      error.message
     );
   }
 }
