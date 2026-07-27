@@ -9,9 +9,7 @@ const songRoutes = require("./routes/songs.routes");
 
 app.use(cors({
     origin:  [
-        "http://localhost:5173",
-        "https://moodify-ten-eta.vercel.app",
-        "https://moodify-2a990stvy-shreyas-projects-f8f657db.vercel.app/"
+        "http://localhost:5173"
     ],
     credentials: true
 }));
