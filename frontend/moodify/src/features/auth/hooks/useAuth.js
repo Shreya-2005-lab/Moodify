@@ -52,9 +52,6 @@ export const useAuth =()=>{
     setLoader(false)
   }
 
-  useEffect(()=>{
-    getMeHandler()
-  },[])
  return({
   user, loader, setLoader, setUser, handleLogin, getMeHandler, handleRegister, logoutHandler, error, setError
  }) 

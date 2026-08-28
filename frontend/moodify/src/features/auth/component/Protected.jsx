@@ -3,10 +3,14 @@ import { Navigate, useNavigate } from "react-router";
 import React from 'react'
 import { Link } from "react-router";
 import "../style/loading.scss";
+import { useEffect } from "react";
 
 const Protected = ({children}) => {
   const navigate = useNavigate();
-  const{user, loader} =useAuth();
+  const{user, loader, getMeHandler} =useAuth();
+  useEffect(()=>{
+    getMeHandler()
+  },[])
 
   if(loader){
     return (
