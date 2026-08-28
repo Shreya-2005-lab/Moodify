@@ -8,10 +8,7 @@ const authRoutes = require("./routes/auth.routes");
 const songRoutes = require("./routes/songs.routes");
 
 app.use(cors({
-    origin:  [
-        "http://localhost:5173",
-        "https://moodify-pekv.vercel.app/"
-    ],
+     origin: "*",
     credentials: true
 }));
 
