@@ -8,7 +8,7 @@ const authRoutes = require("./routes/auth.routes");
 const songRoutes = require("./routes/songs.routes");
 
 app.use(cors({
-     origin: "*",
+     origin: "https://moodify-5r8z.vercel.app",
     credentials: true
 }));
 
