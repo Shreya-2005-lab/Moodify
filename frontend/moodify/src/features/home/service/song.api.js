@@ -1,7 +1,7 @@
 import axios from "axios";
 const api = axios.create({
   baseURL:"https://moodify-1-z2b5.onrender.com/",
-  withCredentials:true
+  withCredentials:true,
 })
 
 export async function getSong({mood}) {
